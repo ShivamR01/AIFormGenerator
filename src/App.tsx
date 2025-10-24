@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Home } from './pages/Home';
@@ -16,6 +16,18 @@ import { Contact } from './pages/Contact';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
+function MainLayout() {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow">
+        <Outlet /> {/* Nested routes render here */}
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 function AppRoutes() {
   const { user, loading } = useAuth();
 
@@ -29,71 +41,68 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/pricing" element={<Pricing />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/signup" element={user ? <Navigate to="/dashboard" replace /> : <SignUp />} />
-      <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/generator"
-        element={
-          <ProtectedRoute>
-            <Generator />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="/form/:id" element={<FormSubmit />} />
-      <Route
-        path="/form/:id/submissions"
-        element={
-          <ProtectedRoute>
-            <FormSubmissions />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/form/:id/submissions/:submissionId"
-        element={
-          <ProtectedRoute>
-            <SubmissionDetail />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/submissions"
-        element={
-          <ProtectedRoute>
-            <Submissions />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/signup" element={user ? <Navigate to="/dashboard" replace /> : <SignUp />} />
+        <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/generator"
+          element={
+            <ProtectedRoute>
+              <Generator />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/form/:id" element={<FormSubmit />} />
+        <Route
+          path="/form/:id/submissions"
+          element={
+            <ProtectedRoute>
+              <FormSubmissions />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/form/:id/submissions/:submissionId"
+          element={
+            <ProtectedRoute>
+              <SubmissionDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/submissions"
+          element={
+            <ProtectedRoute>
+              <Submissions />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
     </Routes>
   );
 }
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <BrowserRouter>
-        <AuthProvider>
-          <Navbar />
-          <main className="flex-grow">
-            <AppRoutes />
-          </main>
-          <Footer />
-        </AuthProvider>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

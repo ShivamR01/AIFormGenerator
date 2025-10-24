@@ -3,13 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/AuthContext";
 import { FormRenderer } from "../components/FormRenderer";
-import {
-  Wand2,
-  Save,
-  ArrowLeft,
-  FileText,
-  Loader2,
-} from "lucide-react";
+import { Wand2, Save, ArrowLeft, FileText, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { FormSchema } from "../lib/supabase";
 
@@ -30,7 +24,9 @@ export function Generator() {
     setGenerating(true);
 
     try {
-      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-form`;
+      const apiUrl = `${
+        import.meta.env.VITE_SUPABASE_URL
+      }/functions/v1/generate-form`;
       const headers = {
         Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         "Content-Type": "application/json",
@@ -57,39 +53,43 @@ export function Generator() {
     }
   };
 
- const handleSave = async () => {
-  if (!schema || !user || !formTitle) return;
+  const handleSave = async () => {
+    if (!schema || !user || !formTitle) return;
 
-  setSaving(true);
-  setError("");
+    setSaving(true);
+    setError(""); // Clear previous error
 
-  try {
-    const { data, error: insertError } = await supabase.from("forms").insert({
-      user_id: user.id,
-      title: formTitle,
-      description: formDescription,
-      schema,
-      is_public: true,
-    });
+    try {
+      const { error: insertError } = await supabase.from("forms").insert({
+        user_id: user.id,
+        title: formTitle,
+        description: formDescription,
+        schema,
+        is_public: true,
+      });
 
-    if (insertError) throw insertError;
+      if (insertError) throw insertError;
 
-    // Optional: show success briefly
-    setError("Form saved successfully!");
+      // Show temporary success message
+      setError("Form saved successfully!");
 
-    // Small delay so user sees message
-    await new Promise((resolve) => setTimeout(resolve, 500));
+      // Small delay so user sees the message
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // Force refresh to dashboard
-    window.location.href = "/dashboard";
-  } catch (err: any) {
-    console.error("Save Form Error:", err);
-    setError(err.message || "Failed to save form");
-  } finally {
-    setSaving(false);
-  }
-};
-
+      // Force a navigation to dashboard
+      navigate("/dashboard", { replace: true });
+      // Clear form state
+      setSchema(null);
+      setPrompt("");
+      setFormTitle("");
+      setFormDescription("");
+    } catch (err: any) {
+      console.error("Save Form Error:", err);
+      setError(err.message || "Failed to save form");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-slate-50 via-blue-50 to-indigo-100">
@@ -132,8 +132,8 @@ export function Generator() {
             AI Form Generator
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto mt-3">
-            Instantly create smart, dynamic, and interactive forms from a single prompt.
-            Customize, preview, and publish — all in one click.
+            Instantly create smart, dynamic, and interactive forms from a single
+            prompt. Customize, preview, and publish — all in one click.
           </p>
         </motion.div>
 
@@ -149,7 +149,9 @@ export function Generator() {
               <Wand2 className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Describe Your Form</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Describe Your Form
+              </h2>
               <p className="text-gray-600 text-sm">
                 The more details you include, the better the AI will design it.
               </p>
@@ -204,7 +206,9 @@ export function Generator() {
             >
               <div className="flex items-center mb-6">
                 <FileText className="w-8 h-8 text-indigo-600 mr-3" />
-                <h2 className="text-2xl font-bold text-gray-900">Preview & Save</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Preview & Save
+                </h2>
               </div>
 
               {/* Title and Description */}
@@ -236,7 +240,9 @@ export function Generator() {
 
               {/* Form Preview */}
               <div className="border-t pt-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Live Preview</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Live Preview
+                </h3>
                 <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-inner">
                   <FormRenderer
                     fields={schema.fields}
@@ -272,8 +278,9 @@ export function Generator() {
         {/* Tip Section */}
         <div className="mt-16 text-center text-gray-500 text-sm">
           <p>
-            💡 Tip: Try prompts like “Job Application Form”, “Customer Feedback Form”, or
-            “Event Registration with Payment Option” to explore the generator’s power.
+            💡 Tip: Try prompts like “Job Application Form”, “Customer Feedback
+            Form”, or “Event Registration with Payment Option” to explore the
+            generator’s power.
           </p>
         </div>
       </div>
