@@ -57,29 +57,39 @@ export function Generator() {
     }
   };
 
-  const handleSave = async () => {
-    if (!schema || !user) return;
+ const handleSave = async () => {
+  if (!schema || !user || !formTitle) return;
 
-    setSaving(true);
-    setError("");
+  setSaving(true);
+  setError("");
 
-    try {
-      const { error: insertError } = await supabase.from("forms").insert({
-        user_id: user.id,
-        title: formTitle,
-        description: formDescription,
-        schema,
-        is_public: true,
-      });
+  try {
+    const { data, error: insertError } = await supabase.from("forms").insert({
+      user_id: user.id,
+      title: formTitle,
+      description: formDescription,
+      schema,
+      is_public: true,
+    });
 
-      if (insertError) throw insertError;
-      navigate("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Failed to save form");
-    } finally {
-      setSaving(false);
-    }
-  };
+    if (insertError) throw insertError;
+
+    // Optional: show success briefly
+    setError("Form saved successfully!");
+
+    // Small delay so user sees message
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    // Force refresh to dashboard
+    window.location.href = "/dashboard";
+  } catch (err: any) {
+    console.error("Save Form Error:", err);
+    setError(err.message || "Failed to save form");
+  } finally {
+    setSaving(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-slate-50 via-blue-50 to-indigo-100">
