@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Wand2,
   Zap,
@@ -14,7 +15,9 @@ import {
   PencilRuler,
   Terminal,
   Code,
-  Github, // Example for logo scroller
+  Github,
+  ChevronDown,
+  Minus,
 } from "lucide-react";
 
 // ==========================================================
@@ -38,6 +41,45 @@ const GlassCard = ({
     {children}
   </motion.div>
 );
+
+// ==========================================================
+// Reusable Accordion Component (NEW)
+// ==========================================================
+const Accordion = ({ title, children }: { title: string; children: React.ReactNode }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <GlassCard className="mb-4 overflow-hidden">
+      <motion.div
+        className="flex cursor-pointer items-center justify-between p-6"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <ChevronDown className="h-5 w-5" />
+        </motion.div>
+      </motion.div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="border-t border-white/10 p-6 pt-4 text-gray-300">
+              {children}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </GlassCard>
+  );
+};
+
 
 // ==========================================================
 // Animation Variants for Framer Motion
@@ -89,6 +131,29 @@ export function Home() {
     <PencilRuler key="6" className="h-8 w-8" />,
   ];
 
+  const steps = [
+    {
+      icon: <PencilRuler className="h-6 w-6 text-blue-300" />,
+      title: "1. Describe",
+      desc: "Start with a simple prompt. 'A contact form with name, email, and message.'",
+    },
+    {
+      icon: <Wand2 className="h-6 w-6 text-purple-300" />,
+      title: "2. Generate",
+      desc: "Our AI instantly builds the form, styles it, and configures the backend.",
+    },
+    {
+      icon: <Layout className="h-6 w-6 text-green-300" />,
+      title: "3. Embed",
+      desc: "Copy a single line of code to embed the form anywhere on your website.",
+    },
+    {
+      icon: <TrendingUp className="h-6 w-6 text-amber-300" />,
+      title: "4. Analyze",
+      desc: "Collect submissions and view powerful insights on your dashboard.",
+    },
+  ];
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white">
       {/* ================= FUTURISTIC AURORA BG ================= */}
@@ -108,7 +173,7 @@ export function Home() {
           <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-2xl border border-blue-400/50 bg-blue-500/10 shadow-lg">
             <Wand2 className="h-10 w-10 text-blue-300" />
           </div>
-          <h1 className="mb-6 bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-5xl font-extrabold text-transparent md:text-7xl">
+          <h1 className="relative z-10 mb-6 bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-5xl font-extrabold text-transparent md:text-7xl">
             AI-Powered Form Generator
           </h1>
           <p className="mx-auto mb-12 max-w-3xl text-lg text-gray-300 md:text-xl">
@@ -134,8 +199,39 @@ export function Home() {
         </motion.div>
       </section>
 
+      {/* ================= VISUAL SHOWCASE (RE-ADDED) ================= */}
+      <motion.section
+        className="relative z-10 mx-auto -mt-10 max-w-6xl px-6"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+      >
+        <GlassCard className="p-4 sm:p-6">
+          <div className="relative h-64 overflow-hidden rounded-lg md:h-[400px]">
+            {/* Fake App UI */}
+            <div className="absolute inset-0 flex">
+              <div className="w-1/4 min-w-[150px] border-r border-white/10 bg-white/5 p-4">
+                <div className="mb-4 h-5 w-3/4 rounded-full bg-white/20" />
+                <div className="mb-3 h-3 w-full rounded-full bg-white/10" />
+                <div className="mb-3 h-3 w-5/6 rounded-full bg-white/10" />
+                <div className="mb-3 h-3 w-full rounded-full bg-white/10" />
+                <div className="h-3 w-1/2 rounded-full bg-white/10" />
+              </div>
+              <div className="flex-1 p-6">
+                <div className="mb-6 h-8 w-1/2 rounded-lg bg-white/20" />
+                <div className="mb-4 h-10 w-full rounded-lg bg-white/10" />
+                <div className="mb-4 h-10 w-full rounded-lg bg-white/10" />
+                <div className="mb-4 h-10 w-3/4 rounded-lg bg-white/10" />
+                <div className="h-10 w-1/3 rounded-lg bg-blue-500/50" />
+              </div>
+            </div>
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-gray-950/50 to-transparent" />
+          </div>
+        </GlassCard>
+      </motion.section>
+
       {/* ================= TRUSTED BY (INFINITE SCROLLER) ================= */}
-      <section className="relative z-10 py-16">
+      <section className="relative z-10 py-24">
         <div className="absolute inset-0 -z-10 bg-white/5 [mask-image:linear-gradient(to_bottom,transparent,white_20%,white_80%,transparent)]" />
         <div className="mx-auto max-w-7xl px-6">
           <p className="mb-8 text-center text-sm font-semibold uppercase text-gray-400">
@@ -158,6 +254,39 @@ export function Home() {
         </div>
       </section>
 
+      {/* ================= HOW IT WORKS (NEW STEPPER) ================= */}
+      <motion.section
+        className="mx-auto max-w-7xl px-6 py-24"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+      >
+        <h2 className="mb-12 text-center text-4xl font-extrabold">
+          Get Started in 4 Simple Steps
+        </h2>
+        <div className="relative mx-auto max-w-2xl">
+          {/* The connecting line */}
+          <div className="absolute left-9 top-0 z-0 h-full w-0.5 bg-gradient-to-b from-transparent via-blue-500 to-transparent" />
+
+          {steps.map((step, i) => (
+            <motion.div
+              key={i}
+              className="relative z-10 mb-12 flex items-start"
+              variants={itemVariants}
+            >
+              <div className="flex h-18 w-18 flex-shrink-0 items-center justify-center rounded-full border-2 border-blue-500/50 bg-gray-900 p-4">
+                {step.icon}
+              </div>
+              <div className="ml-6">
+                <h3 className="mb-2 text-xl font-bold">{step.title}</h3>
+                <p className="text-gray-300">{step.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.section>
+
       {/* ================= FEATURES BENTO GRID ================= */}
       <motion.section
         className="relative z-10 mx-auto max-w-7xl px-6 py-24"
@@ -176,10 +305,7 @@ export function Home() {
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* == Main AI Prompt Card == */}
-          <motion.div
-            variants={itemVariants}
-            className="lg:col-span-2"
-          >
+          <motion.div variants={itemVariants} className="lg:col-span-2">
             <GlassCard className="flex h-full flex-col p-6">
               <div className="mb-4 flex items-center gap-2">
                 <Terminal className="h-5 w-5 text-blue-300" />
@@ -236,10 +362,7 @@ export function Home() {
           </motion.div>
 
           {/* == Instant Generation Card == */}
-          <motion.div
-            variants={itemVariants}
-            className="lg:col-span-2"
-          >
+          <motion.div variants={itemVariants} className="lg:col-span-2">
             <GlassCard className="flex h-full flex-col items-center justify-between p-6 sm:flex-row">
               <div>
                 <h3 className="mb-2 text-xl font-bold">Instant Generation</h3>
@@ -399,7 +522,7 @@ export function Home() {
                   <li key={item} className="flex gap-2">
                     <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
                     <span className="text-gray-300">{item}</span>
-</li>
+                  </li>
                 ))}
               </ul>
               <Link
@@ -411,6 +534,90 @@ export function Home() {
             </GlassCard>
           </motion.div>
         </div>
+      </motion.section>
+
+      {/* ================= FEATURE COMPARISON TABLE (NEW) ================= */}
+      <motion.section
+        className="mx-auto max-w-7xl px-6 py-24"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={itemVariants}
+      >
+        <h2 className="mb-12 text-center text-4xl font-extrabold">
+          Compare All Features
+        </h2>
+        <GlassCard className="overflow-hidden p-6 md:p-8">
+          <div className="overflow-x-auto">
+            <table className="min-w-full w-full text-left">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="py-4 pr-4 font-semibold">Feature</th>
+                  <th className="py-4 px-4 text-center font-semibold">Hobby</th>
+                  <th className="py-4 px-4 text-center font-semibold text-blue-300">Pro</th>
+                  <th className="py-4 pl-4 text-center font-semibold">Enterprise</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-white/10">
+                  <td className="py-4 pr-4">Forms</td>
+                  <td className="py-4 px-4 text-center text-gray-300">3</td>
+                  <td className="py-4 px-4 text-center text-blue-300">Unlimited</td>
+                  <td className="py-4 pl-4 text-center text-gray-300">Unlimited</td>
+                </tr>
+                <tr className="border-b border-white/10">
+                  <td className="py-4 pr-4">Submissions</td>
+                  <td className="py-4 px-4 text-center text-gray-300">50/mo</td>
+                  <td className="py-4 px-4 text-center text-blue-300">5,000/mo</td>
+                  <td className="py-4 pl-4 text-center text-gray-300">Unlimited</td>
+                </tr>
+                <tr className="border-b border-white/10">
+                  <td className="py-4 pr-4">AI Form Generation</td>
+                  <td className="py-4 px-4 text-center"><Check className="h-5 w-5 mx-auto text-green-400" /></td>
+                  <td className="py-4 px-4 text-center"><Check className="h-5 w-5 mx-auto text-green-400" /></td>
+                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 mx-auto text-green-400" /></td>
+                </tr>
+                <tr className="border-b border-white/10">
+                  <td className="py-4 pr-4">Analytics Dashboard</td>
+                  <td className="py-4 px-4 text-center"><Minus className="h-5 w-5 mx-auto text-gray-600" /></td>
+                  <td className="py-4 px-4 text-center"><Check className="h-5 w-5 mx-auto text-green-400" /></td>
+                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 mx-auto text-green-400" /></td>
+                </tr>
+                <tr>
+                  <td className="py-4 pr-4">Dedicated Support</td>
+                  <td className="py-4 px-4 text-center"><Minus className="h-5 w-5 mx-auto text-gray-600" /></td>
+                  <td className="py-4 px-4 text-center"><Minus className="h-5 w-5 mx-auto text-gray-600" /></td>
+                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 mx-auto text-green-400" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </GlassCard>
+      </motion.section>
+
+      {/* ================= FAQ (NEW) ================= */}
+      <motion.section
+        className="mx-auto max-w-4xl px-6 py-24"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={containerVariants}
+      >
+        <h2 className="mb-12 text-center text-4xl font-extrabold">
+          Frequently Asked Questions
+        </h2>
+        <Accordion title="How does the AI form generation work?">
+          <p>You provide a simple text prompt (e.g., "A contact form with name, email, and message") and our AI model generates the complete form, including validated fields and backend logic, in seconds.</p>
+        </Accordion>
+        <Accordion title="Can I embed the forms on my own website?">
+          <p>Yes! After generating a form, you can embed it on any website using a simple snippet of code we provide. You can also share it as a standalone page.</p>
+        </Accordion>
+        <Accordion title="What happens if I go over my submission limit?">
+          <p>On the Hobby plan, your forms will be temporarily disabled until the next billing cycle. On the Pro plan, we offer overage pricing or the option to upgrade to an Enterprise plan.</p>
+        </Accordion>
+        <Accordion title="Is my data secure?">
+          <p>Absolutely. All form data is encrypted at rest and in transit. We are fully GDPR compliant and take data security very seriously. Enterprise plans offer additional security features like SSO.</p>
+        </Accordion>
       </motion.section>
 
       {/* ================= FINAL CTA (IN ASYMMETRIC SECTION) ================= */}
