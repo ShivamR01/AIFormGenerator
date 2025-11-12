@@ -1068,6 +1068,7 @@ export function Home() {
           </GlassCard>
         </motion.div>
       </section>
+
     </div>
   );
 }
