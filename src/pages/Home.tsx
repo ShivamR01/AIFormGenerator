@@ -32,7 +32,7 @@ interface GlassCardProps {
 const GlassCard = ({
   children,
   className = "",
-  whileHover = { scale: 1.02, transition: { duration: 0.2 } },
+  whileHover = { scale: 1.02 },
 }: GlassCardProps) => (
   <motion.div
     whileHover={whileHover}
@@ -82,7 +82,7 @@ const Accordion = ({ title, children }: { title: string; children: React.ReactNo
 
 
 // ==========================================================
-// Animation Variants
+// Animation Variants for Framer Motion
 // ==========================================================
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -111,16 +111,6 @@ const itemVariants = {
 // Main Home Component
 // ==========================================================
 export function Home() {
-  // 3D Hero Card Scroll Animation
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const rotateX = useTransform(scrollYProgress, [0, 1], [5, -15]);
-  const rotateY = useTransform(scrollYProgress, [0, 1], [-5, 10]);
-
-  // Logo Scroller Animation
   const logoVariants = {
     animate: {
       x: "-100%",
@@ -131,6 +121,7 @@ export function Home() {
       },
     },
   };
+
   const logos = [
     <Github key="1" className="h-8 w-8" />,
     <Layers key="2" className="h-8 w-8" />,
@@ -164,54 +155,16 @@ export function Home() {
   ];
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white [background-image:radial-gradient(white_0.5px,_transparent_0.5px)] [background-size:2rem_2rem]">
-      {/* ================= SUPER-PREMIUM BACKGROUND ================= */}
+    <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white">
+      {/* ================= FUTURISTIC AURORA BG ================= */}
       <div className="absolute inset-0 -z-10 overflow-hidden opacity-70">
-        {/* === REPLACE THIS WITH A REAL VIDEO FOR MAX EFFECT === */}
-        {/* <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="absolute inset-0 w-full h-full object-cover"
-          src="/path/to/your/premium-bg-video.mp4" 
-        /> */}
-
-        {/* Animated Aurora Fallback */}
-        <motion.div
-          className="absolute left-[-20rem] top-[-10rem] h-[40rem] w-[60rem] rounded-full bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 opacity-20 blur-3xl"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, 50, 0],
-            rotate: [0, 5, 0],
-            scale: [1, 1.05, 1],
-          }}
-          transition={{
-            duration: 20,
-            ease: "easeInOut",
-            repeat: Infinity,
-          }}
-        />
-        <motion.div
-          className="absolute right-[-15rem] top-[15rem] h-[30rem] w-[50rem] rounded-full bg-gradient-to-r from-pink-500 to-indigo-600 opacity-10 blur-3xl"
-          animate={{
-            x: [0, -80, 0],
-            y: [0, -40, 0],
-            rotate: [0, -5, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 25,
-            ease: "easeInOut",
-            repeat: Infinity,
-            delay: 5,
-          }}
-        />
+        <div className="absolute left-[-20rem] top-[-10rem] h-[40rem] w-[60rem] rounded-full bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 opacity-20 blur-3xl" />
+        <div className="absolute right-[-15rem] top-[15rem] h-[30rem] w-[50rem] rounded-full bg-gradient-to-r from-pink-500 to-indigo-600 opacity-10 blur-3xl" />
         <div className="absolute bottom-0 left-1/3 h-[30rem] w-[50rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-green-500 to-blue-600 opacity-10 blur-3xl" />
       </div>
 
-      {/* ================= SUPER-ENHANCED HERO ================= */}
-      <section className="relative z-10 mx-auto max-w-7xl px-6 pb-24 pt-32 text-center" ref={heroRef}>
+      {/* ================= HERO ================= */}
+      <section className="relative z-10 mx-auto max-w-7xl px-6 pb-24 pt-32 text-center">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -235,6 +188,12 @@ export function Home() {
             >
               Get Started Free
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link
+              to="/login"
+              className="rounded-xl border border-white/20 bg-white/10 px-8 py-3 text-lg font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20"
+            >
+              Sign In
             </Link>
           </div>
         </motion.div>
@@ -272,7 +231,7 @@ export function Home() {
       </motion.section>
 
       {/* ================= TRUSTED BY (INFINITE SCROLLER) ================= */}
-      <section className="relative z-10 py-16">
+      <section className="relative z-10 py-24">
         <div className="absolute inset-0 -z-10 bg-white/5 [mask-image:linear-gradient(to_bottom,transparent,white_20%,white_80%,transparent)]" />
         <div className="mx-auto max-w-7xl px-6">
           <p className="mb-8 text-center text-sm font-semibold uppercase text-gray-400">
@@ -336,13 +295,13 @@ export function Home() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
       >
-        <h2 className="mb-12 text-center text-4xl font-extrabold">
-          Build{" "}
-          <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Smarter
-          </span>
-          , Not Harder
+        <h2 className="mb-4 text-center text-4xl font-extrabold">
+          Build <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Smarter</span>,
+          Not Harder
         </h2>
+        <p className="mb-12 text-center text-lg text-gray-300">
+          Everything you need, powered by AI.
+        </p>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* == Main AI Prompt Card == */}
@@ -365,9 +324,16 @@ export function Home() {
                   <span className="animate-pulse">|</span>
                 </p>
               </div>
+              <div className="mt-4 rounded-lg border border-white/10 bg-black/30 p-4">
+                <p className="mb-2 font-mono text-sm text-gray-500">
+                  // Generated Code
+                </p>
+                <Code className="h-12 w-12 text-gray-700 opacity-50" />
+              </div>
             </GlassCard>
           </motion.div>
 
+          {/* == Security Card == */}
           <motion.div variants={itemVariants}>
             <GlassCard className="flex h-full flex-col p-6">
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/20">
@@ -375,11 +341,13 @@ export function Home() {
               </div>
               <h3 className="mb-2 text-xl font-bold">Enterprise Security</h3>
               <p className="text-gray-300">
-                All data is encrypted at rest and in transit.
+                All data is encrypted at rest and in transit. Secure, private,
+                and reliable.
               </p>
             </GlassCard>
           </motion.div>
 
+          {/* == Analytics Card == */}
           <motion.div variants={itemVariants}>
             <GlassCard className="flex h-full flex-col p-6">
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-amber-500/20">
@@ -387,7 +355,8 @@ export function Home() {
               </div>
               <h3 className="mb-2 text-xl font-bold">Real-time Analytics</h3>
               <p className="text-gray-300">
-                Track submissions and analyze trends with one click.
+                Track submissions, analyze trends, and export your data with one
+                click.
               </p>
             </GlassCard>
           </motion.div>
@@ -398,7 +367,8 @@ export function Home() {
               <div>
                 <h3 className="mb-2 text-xl font-bold">Instant Generation</h3>
                 <p className="max-w-md text-gray-300">
-                  Go from prompt to live form in under 30 seconds.
+                  Go from a text prompt to a fully functional, live-hosted form
+                  in under 30 seconds.
                 </p>
               </div>
               <Zap className="h-16 w-16 text-blue-400 sm:ml-6" />
@@ -409,6 +379,7 @@ export function Home() {
 
       {/* ================= ASYMMETRIC SECTION DIVIDER ================= */}
       <div className="relative z-0 bg-gray-900 py-32 [clip-path:polygon(0_10%,_100%_0,_100%_90%,_0_100%)]">
+        {/* ================= TESTIMONIALS ================= */}
         <motion.section
           className="relative z-10 mx-auto max-w-6xl px-6 text-center"
           variants={containerVariants}
@@ -466,6 +437,7 @@ export function Home() {
           Find the Plan for You
         </h2>
         <div className="grid gap-8 lg:grid-cols-3">
+          {/* Free Plan */}
           <motion.div variants={itemVariants}>
             <GlassCard className="flex h-full flex-col p-8">
               <h3 className="text-xl font-bold">Hobby</h3>
@@ -475,6 +447,7 @@ export function Home() {
                   / mo
                 </span>
               </p>
+              <p className="mt-2 text-gray-400">For personal projects.</p>
               <ul className="mt-6 flex-1 space-y-3">
                 {[
                   "3 Forms",
@@ -496,6 +469,7 @@ export function Home() {
             </GlassCard>
           </motion.div>
 
+          {/* Pro Plan (Highlighted) */}
           <motion.div variants={itemVariants}>
             <div className="relative h-full rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-[2px] shadow-[0_0_30px_theme(colors.blue.500/50)]">
               <div className="relative h-full w-full rounded-[15px] bg-gray-950 p-8">
@@ -509,6 +483,7 @@ export function Home() {
                     / mo
                   </span>
                 </p>
+                <p className="mt-2 text-gray-400">For professionals & teams.</p>
                 <ul className="mt-6 flex-1 space-y-3">
                   {[
                     "Unlimited Forms",
@@ -532,10 +507,12 @@ export function Home() {
             </div>
           </motion.div>
 
+          {/* Enterprise Plan */}
           <motion.div variants={itemVariants}>
             <GlassCard className="flex h-full flex-col p-8">
               <h3 className="text-xl font-bold">Enterprise</h3>
               <p className="mt-2 text-4xl font-extrabold">Custom</p>
+              <p className="mt-2 text-gray-400">For large-scale needs.</p>
               <ul className="mt-6 flex-1 space-y-3">
                 {[
                   "Unlimited Submissions",
@@ -545,7 +522,7 @@ export function Home() {
                   <li key={item} className="flex gap-2">
                     <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
                     <span className="text-gray-300">{item}</span>
-</li>
+                  </li>
                 ))}
               </ul>
               <Link
@@ -643,7 +620,7 @@ export function Home() {
         </Accordion>
       </motion.section>
 
-      {/* ================= FINAL CTA (SHAPED) ================= */}
+      {/* ================= FINAL CTA (IN ASYMMETRIC SECTION) ================= */}
       <section className="relative overflow-hidden py-32 [clip-path:polygon(0_15%,_100%_0,_100%_100%,_0_100%)]">
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 to-gray-950" />
         <motion.div
