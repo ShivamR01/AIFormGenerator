@@ -18,12 +18,15 @@ import {
   Github,
   ChevronDown,
   Minus,
-  Users, // New
-  Briefcase, // New
-  Megaphone, // New
-  Globe2, // New
-  Link2, // New
-  GitBranch, // New
+  Users,
+  Briefcase,
+  Megaphone,
+  Globe2,
+  Link2,
+  GitBranch,
+  Star, // New
+  Twitter, // New
+  Linkedin, // New
 } from "lucide-react";
 
 // ==========================================================
@@ -49,7 +52,7 @@ const GlassCard = ({
 );
 
 // ==========================================================
-// Reusable Light Card Component (For Light BG) (NEW)
+// Reusable Light Card Component (For Light BG)
 // ==========================================================
 const LightCard = ({
   children,
@@ -58,14 +61,14 @@ const LightCard = ({
 }: GlassCardProps) => (
   <motion.div
     whileHover={whileHover}
-    className={`overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg ${className}`}
+    className={`overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-lg ${className}`}
   >
     {children}
   </motion.div>
 );
 
 // ==========================================================
-// Reusable Accordion Component (NEW for Light BG)
+// Reusable Accordion Component (For Light BG)
 // ==========================================================
 const Accordion = ({
   title,
@@ -76,17 +79,17 @@ const Accordion = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="border-b border-slate-200">
+    <div className="border-b border-neutral-200">
       <motion.div
         className="flex cursor-pointer items-center justify-between py-6"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+        <h3 className="text-lg font-semibold text-neutral-900">{title}</h3>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3 }}
         >
-          <ChevronDown className="h-5 w-5 text-gray-500" />
+          <ChevronDown className="h-5 w-5 text-neutral-500" />
         </motion.div>
       </motion.div>
       <AnimatePresence>
@@ -98,7 +101,7 @@ const Accordion = ({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="pb-6 text-gray-600">{children}</div>
+            <div className="pb-6 text-neutral-600">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -107,21 +110,40 @@ const Accordion = ({
 };
 
 // ==========================================================
-// Reusable Section Divider (NEW)
+// Reusable Section Divider (Optimized)
 // ==========================================================
 interface SectionDividerProps {
-  type: "wave-up" | "wave-down" | "curve-up" | "curve-down" | "slant-up" | "slant-down";
-  fillClass: string; // e.g., "fill-white", "fill-gray-950"
+  type:
+    | "wave-up"
+    | "wave-down"
+    | "curve-up"
+    | "curve-down"
+    | "slant-up"
+    | "slant-down"
+    | "swoop-up" // New
+    | "swoop-down" // New
+    | "ridge-up" // New
+    | "ridge-down"; // New
+  fillClass: string; // e.g., "fill-white", "fill-slate-950"
 }
 
 const SectionDivider = ({ type, fillClass }: SectionDividerProps) => {
   const paths = {
+    // Smoothed Wave
     "wave-up": "M0,64 C240,0,480,0,720,64 C960,128,1200,128,1440,64 L1440,100 L0,100 Z",
     "wave-down": "M0,36 C240,100,480,100,720,36 C960,-28,1200,-28,1440,36 L1440,0 L0,0 Z",
+    // Smoothed Curve
     "curve-up": "M0,100 C480,0,960,0,1440,100 L1440,100 L0,100 Z",
     "curve-down": "M0,0 C480,100,960,100,1440,0 L1440,0 L0,0 Z",
+    // Slant
     "slant-up": "M0,100 L1440,0 L1440,100 L0,100 Z",
     "slant-down": "M0,0 L1440,100 L1440,0 L0,0 Z",
+    // New Swoop
+    "swoop-up": "M0,100 C100,0,1340,0,1440,100 L1440,100 L0,100 Z",
+    "swoop-down": "M0,0 C100,100,1340,100,1440,0 L1440,0 L0,0 Z",
+    // New Ridge
+    "ridge-up": "M0,100 L720,0 L1440,100 L1440,100 L0,100 Z",
+    "ridge-down": "M0,0 L720,100 L1440,0 L1440,0 L0,0 Z",
   };
 
   return (
@@ -139,7 +161,7 @@ const SectionDivider = ({ type, fillClass }: SectionDividerProps) => {
 };
 
 // ==========================================================
-// Reusable Tabbed Section (NEW)
+// Reusable Tabbed Section (For Light BG)
 // ==========================================================
 const useCases = [
   {
@@ -174,15 +196,15 @@ const TabbedSection = () => {
 
   return (
     <div>
-      <div className="mb-8 flex flex-col sm:flex-row justify-center gap-2 p-2 bg-slate-200/60 rounded-xl">
+      <div className="mb-8 flex flex-col sm:flex-row justify-center gap-2 p-2 bg-neutral-200/60 rounded-xl">
         {useCases.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`flex-1 relative px-4 py-3 text-sm sm:text-base font-semibold rounded-lg transition-colors ${
               activeTab === tab.id
-                ? "text-gray-900"
-                : "text-gray-600 hover:text-gray-900"
+                ? "text-neutral-900"
+                : "text-neutral-600 hover:text-neutral-900"
             }`}
           >
             {activeTab === tab.id && (
@@ -208,10 +230,10 @@ const TabbedSection = () => {
           transition={{ duration: 0.3 }}
           className="text-center max-w-2xl mx-auto"
         >
-          <p className="text-xl text-gray-700 mb-4">
+          <p className="text-xl text-neutral-700 mb-4">
             {activeUseCase.content}
           </p>
-          <p className="font-semibold text-gray-900">
+          <p className="font-semibold text-neutral-900">
             {activeUseCase.feature}
           </p>
         </motion.div>
@@ -219,6 +241,94 @@ const TabbedSection = () => {
     </div>
   )
 }
+
+// ==========================================================
+// Code Showcase Component (NEW)
+// ==========================================================
+const codeSnippets = {
+  react: `import { useForm } from 'aiformgen-react';
+
+export default function ContactForm() {
+  const { register, handleSubmit, errors } = useForm('contact-form-id');
+  const onSubmit = data => console.log(data);
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('name')} placeholder="Name" />
+      <input {...register('email')} placeholder="Email" />
+      <textarea {...register('message')} placeholder="Message" />
+      <button type="submit">Send</button>
+    </form>
+  );
+}`,
+  html: `<!-- 1. Add script to your <head> -->
+<script src="https://cdn.aiformgen.com/v1.js" defer></script>
+
+<!-- 2. Add the embed tag where you want the form -->
+<div data-aiformgen-id="contact-form-id"></div>`,
+  curl: `curl -X POST 'https://api.aiformgen.com/v1/submit/contact-form-id' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+        "name": "Jane Doe",
+        "email": "jane@example.com",
+        "message": "Hello!"
+      }'`
+};
+
+const CodeShowcase = () => {
+  const [activeTab, setActiveTab] = useState<'react' | 'html' | 'curl'>('react');
+  
+  const TabButton = ({ id, label }: { id: 'react' | 'html' | 'curl', label: string }) => (
+    <button
+      onClick={() => setActiveTab(id)}
+      className={`relative px-4 py-2 text-sm font-medium transition-colors ${
+        activeTab === id 
+          ? 'text-blue-300' 
+          : 'text-neutral-400 hover:text-neutral-200'
+      }`}
+    >
+      {label}
+      {activeTab === id && (
+        <motion.div
+          layoutId="codeTabIndicator"
+          className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-400"
+        />
+      )}
+    </button>
+  );
+
+  return (
+    <GlassCard className="lg:col-span-3">
+      <div className="flex items-center justify-between border-b border-white/10 px-4">
+        <div className="flex gap-1">
+          <TabButton id="react" label="React" />
+          <TabButton id="html" label="HTML/Embed" />
+          <TabButton id="curl" label="cURL API" />
+        </div>
+        <div className="flex items-center gap-1.5 p-4">
+          <div className="w-3 h-3 rounded-full bg-red-500/70"></div>
+          <div className="w-3 h-3 rounded-full bg-yellow-500/70"></div>
+          <div className="w-3 h-3 rounded-full bg-green-500/70"></div>
+        </div>
+      </div>
+      <div className="p-6 bg-black/30">
+        <AnimatePresence mode="wait">
+          <motion.pre
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="text-sm text-left overflow-x-auto"
+          >
+            <code className="font-mono">{codeSnippets[activeTab]}</code>
+          </motion.pre>
+        </AnimatePresence>
+      </div>
+    </GlassCard>
+  );
+};
+
 
 // ==========================================================
 // Animation Variants for Framer Motion
@@ -294,9 +404,9 @@ export function Home() {
   ];
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white text-white">
+    <div className="min-h-screen overflow-x-hidden bg-neutral-50 text-white">
       {/* ================= HERO (DARK) ================= */}
-      <section className="relative z-10 mx-auto max-w-full px-6 pb-24 pt-32 text-center bg-gradient-to-b from-gray-950 via-gray-900 to-black">
+      <section className="relative z-10 mx-auto max-w-full px-6 pb-24 pt-32 text-center bg-gradient-to-b from-slate-950 via-slate-900 to-black">
         {/* ================= FUTURISTIC AURORA BG ================= */}
         <div className="absolute inset-0 -z-10 overflow-hidden opacity-70">
           <div className="absolute left-[-20rem] top-[-10rem] h-[40rem] w-[60rem] rounded-full bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 opacity-20 blur-3xl" />
@@ -343,7 +453,7 @@ export function Home() {
           </div>
         </motion.div>
 
-        {/* ================= VISUAL SHOWCASE (RE-ADDED) ================= */}
+        {/* ================= VISUAL SHOWCASE ================= */}
         <motion.section
           className="relative z-10 mx-auto -mb-20 md:-mb-32 max-w-6xl px-6 pt-16"
           initial={{ opacity: 0, y: 50 }}
@@ -369,18 +479,18 @@ export function Home() {
                   <div className="h-10 w-1/3 rounded-lg bg-blue-500/50" />
                 </div>
               </div>
-              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-gray-950/50 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/50 to-transparent" />
             </div>
           </GlassCard>
         </motion.section>
       </section>
 
       {/* ================= DIVIDER (DARK to LIGHT) ================= */}
-      <SectionDivider type="wave-down" fillClass="fill-gray-950" />
+      <SectionDivider type="wave-down" fillClass="fill-slate-950" />
 
-      {/* ================= HOW IT WORKS (LIGHT) (RE-DESIGNED) ================= */}
+      {/* ================= HOW IT WORKS (LIGHT) ================= */}
       <motion.section
-        className="mx-auto max-w-7xl px-6 py-24 bg-white text-gray-900"
+        className="mx-auto max-w-7xl px-6 py-24 bg-neutral-50 text-neutral-900"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -395,22 +505,22 @@ export function Home() {
               key={i}
               variants={itemVariants}
             >
-              <LightCard className="p-8 text-center h-full">
-                <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-slate-100">
+              <LightCard className="p-8 text-center h-full bg-white">
+                <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-neutral-100">
                   {step.icon}
                 </div>
                 <h3 className="mb-3 text-xl font-bold">{step.title}</h3>
-                <p className="text-gray-600">{step.desc}</p>
+                <p className="text-neutral-600">{step.desc}</p>
               </LightCard>
             </motion.div>
           ))}
         </div>
       </motion.section>
       
-      {/* ================= TRUSTED BY (LIGHT GRAY) ================= */}
-      <section className="relative z-10 py-20 bg-slate-50">
+      {/* ================= TRUSTED BY (LIGHTER) ================= */}
+      <section className="relative z-10 py-20 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="mb-8 text-center text-sm font-semibold uppercase text-gray-500">
+          <p className="mb-8 text-center text-sm font-semibold uppercase text-neutral-500">
             Trusted by developers at
           </p>
           <div className="relative w-full overflow-hidden">
@@ -420,7 +530,7 @@ export function Home() {
               initial={{ x: "0%" }}
               animate="animate"
             >
-              <div className="flex w-max shrink-0 items-center justify-around gap-16 px-8 text-gray-400">
+              <div className="flex w-max shrink-0 items-center justify-around gap-16 px-8 text-neutral-400">
                 {[...logos, ...logos].map((logo, i) => (
                   <span key={i}>{logo}</span>
                 ))}
@@ -431,11 +541,30 @@ export function Home() {
       </section>
 
       {/* ================= DIVIDER (LIGHT to DARK) ================= */}
-      <SectionDivider type="wave-up" fillClass="fill-slate-50" />
+      <SectionDivider type="wave-up" fillClass="fill-white" />
 
-      {/* ================= FEATURES BENTO GRID (DARK) (EXPANDED) ================= */}
+      {/* ================= CODE SHOWCASE (DARK) (NEW) ================= */}
       <motion.section
-        className="relative z-10 mx-auto max-w-7xl px-6 py-24 bg-gray-950"
+        className="relative z-10 mx-auto max-w-7xl px-6 py-24 bg-slate-950"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+      >
+        <h2 className="mb-4 text-center text-4xl font-extrabold">
+          From Prompt to Production
+        </h2>
+        <p className="mb-12 text-center text-lg text-gray-300 max-w-3xl mx-auto">
+          We don't just build a form. We give you the production-ready code, embeddable scripts, and API endpoints to integrate it anywhere.
+        </p>
+        <motion.div variants={itemVariants} className="max-w-4xl mx-auto">
+          <CodeShowcase />
+        </motion.div>
+      </motion.section>
+
+      {/* ================= FEATURES BENTO GRID (DARK) ================= */}
+      <motion.section
+        className="relative z-10 mx-auto max-w-7xl px-6 py-24 bg-slate-950"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -508,7 +637,7 @@ export function Home() {
             </GlassCard>
           </motion.div>
 
-          {/* == Integrations Card (NEW) == */}
+          {/* == Integrations Card == */}
           <motion.div variants={itemVariants}>
             <GlassCard className="flex h-full flex-col p-6">
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/20">
@@ -521,7 +650,7 @@ export function Home() {
             </GlassCard>
           </motion.div>
 
-          {/* == Team Collab (NEW) == */}
+          {/* == Team Collab == */}
           <motion.div variants={itemVariants}>
             <GlassCard className="flex h-full flex-col p-6">
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-pink-500/20">
@@ -547,27 +676,41 @@ export function Home() {
             </GlassCard>
           </motion.div>
 
-          {/* == Custom Domain (NEW) == */}
-          <motion.div variants={itemVariants} className="lg:col-span-2">
-             <GlassCard className="flex h-full flex-col items-center justify-between p-6 sm:flex-row">
-              <div>
-                <h3 className="mb-2 text-xl font-bold">Custom Domains</h3>
-                <p className="max-w-md text-gray-300">
-                  Host your forms on your own domain for a seamless brand experience.
-                </p>
+          {/* == Custom Domain == */}
+          <motion.div variants={itemVariants} className="lg:col-span-1">
+             <GlassCard className="flex h-full flex-col p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/20">
+                <Link2 className="h-6 w-6 text-green-300" />
               </div>
-              <Link2 className="h-16 w-16 text-green-400 sm:ml-6 mt-4 sm:mt-0" />
+              <h3 className="mb-2 text-xl font-bold">Custom Domains</h3>
+              <p className="text-gray-300">
+                Host forms on your own domain.
+              </p>
             </GlassCard>
           </motion.div>
+          
+          {/* == Version Control (NEW) == */}
+          <motion.div variants={itemVariants} className="lg:col-span-1">
+             <GlassCard className="flex h-full flex-col p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-neutral-500/20">
+                <GitBranch className="h-6 w-6 text-neutral-300" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold">Version Control</h3>
+              <p className="text-gray-300">
+                Track changes and roll back to previous versions.
+              </p>
+            </GlassCard>
+          </motion.div>
+          
         </div>
       </motion.section>
 
       {/* ================= DIVIDER (DARK to LIGHT) ================= */}
-      <SectionDivider type="curve-down" fillClass="fill-gray-950" />
+      <SectionDivider type="curve-down" fillClass="fill-slate-950" />
 
-      {/* ================= USE CASES (LIGHT) (NEW) ================= */}
+      {/* ================= USE CASES (LIGHT) ================= */}
       <motion.section
-        className="mx-auto max-w-7xl px-6 py-24 bg-white text-gray-900"
+        className="mx-auto max-w-7xl px-6 py-24 bg-neutral-50 text-neutral-900"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -579,9 +722,10 @@ export function Home() {
         <TabbedSection />
       </motion.section>
       
-      {/* ================= TESTIMONIALS (LIGHT GRAY) (RE-DESIGNED) ================= */}
+      {/* ================= TESTIMONIALS (LIGHTER) (RE-DESIGNED) ================= */}
+      <SectionDivider type="swoop-up" fillClass="fill-neutral-50" />
       <motion.section
-        className="relative z-10 mx-auto max-w-full px-6 py-24 bg-slate-50"
+        className="relative z-10 mx-auto max-w-full px-6 py-24 bg-white"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -589,36 +733,52 @@ export function Home() {
       >
         <div className="max-w-7xl mx-auto">
           <Globe className="mx-auto mb-4 h-10 w-10 text-blue-500" />
-          <h2 className="mb-12 text-center text-4xl font-extrabold text-gray-900">Loved by Teams Worldwide</h2>
+          <h2 className="mb-12 text-center text-4xl font-extrabold text-neutral-900">Loved by Teams Worldwide</h2>
           <div className="grid gap-8 md:grid-cols-3">
             {[
               {
                 name: "Arjun Mehta",
                 role: "Startup Founder",
+                avatarColor: "bg-purple-500",
                 quote:
                   "This app saved us weeks of development time. It’s like having a full frontend engineer powered by AI.",
               },
               {
                 name: "Sara Liu",
                 role: "Product Manager",
+                avatarColor: "bg-green-500",
                 quote:
                   "The simplicity and power are unmatched. Our forms are up and running in minutes, not days.",
               },
               {
                 name: "James Patel",
                 role: "Developer",
+                avatarColor: "bg-blue-500",
                 quote:
                   "I never thought generating dynamic forms could be this smooth. Absolute game-changer!",
               },
             ].map((t) => (
               <motion.div key={t.name} variants={itemVariants}>
                 <LightCard className="h-full p-8 text-left flex flex-col">
-                  <Layers className="mb-4 h-6 w-6 text-blue-500" />
-                  <p className="mb-4 flex-1 italic text-gray-600">
+                  <div className="flex mb-4">
+                    <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                    <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                    <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                    <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                    <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                  </div>
+                  <p className="mb-6 flex-1 text-lg italic text-neutral-700">
                     “{t.quote}”
                   </p>
-                  <h4 className="font-semibold text-gray-900">{t.name}</h4>
-                  <p className="text-sm text-gray-500">{t.role}</p>
+                  <div className="flex items-center">
+                    <div className={`w-12 h-12 rounded-full ${t.avatarColor} flex items-center justify-center text-white font-semibold text-xl mr-4`}>
+                      {t.name[0]}
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-neutral-900">{t.name}</h4>
+                      <p className="text-sm text-neutral-500">{t.role}</p>
+                    </div>
+                  </div>
                 </LightCard>
               </motion.div>
             ))}
@@ -627,11 +787,11 @@ export function Home() {
       </motion.section>
 
       {/* ================= DIVIDER (LIGHT to DARK) ================= */}
-      <SectionDivider type="slant-up" fillClass="fill-slate-50" />
+      <SectionDivider type="slant-up" fillClass="fill-white" />
 
       {/* ================= PRICING (DARK) ================= */}
       <motion.section
-        className="relative z-10 -mt-16 mx-auto max-w-7xl px-6 py-24 bg-gray-950"
+        className="relative z-10 -mt-16 mx-auto max-w-7xl px-6 py-24 bg-slate-950"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -676,7 +836,7 @@ export function Home() {
           {/* Pro Plan (Highlighted) */}
           <motion.div variants={itemVariants}>
             <div className="relative h-full rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-[2px] shadow-[0_0_30px_theme(colors.blue.500/50)]">
-              <div className="relative h-full w-full rounded-[15px] bg-gray-950 p-8">
+              <div className="relative h-full w-full rounded-[15px] bg-slate-950 p-8">
                 <div className="absolute -top-4 right-6 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 px-4 py-1 text-sm font-semibold">
                   Most Popular
                 </div>
@@ -742,7 +902,7 @@ export function Home() {
 
       {/* ================= FEATURE COMPARISON TABLE (DARK) ================= */}
       <motion.section
-        className="mx-auto max-w-7xl px-6 py-24 bg-gray-950"
+        className="mx-auto max-w-7xl px-6 py-24 bg-slate-950"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
@@ -800,11 +960,11 @@ export function Home() {
       </motion.section>
 
       {/* ================= DIVIDER (DARK to LIGHT) ================= */}
-      <SectionDivider type="wave-down" fillClass="fill-gray-950" />
+      <SectionDivider type="wave-down" fillClass="fill-slate-950" />
 
-      {/* ================= FAQ (LIGHT) (RE-DESIGNED) ================= */}
+      {/* ================= FAQ (LIGHT) ================= */}
       <motion.section
-        className="mx-auto max-w-4xl px-6 py-24 bg-white text-gray-900"
+        className="mx-auto max-w-4xl px-6 py-24 bg-neutral-50 text-neutral-900"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
@@ -827,11 +987,13 @@ export function Home() {
         </Accordion>
       </motion.section>
 
+      {/* ================= DIVIDER (LIGHT to DARK) ================= */}
+      <SectionDivider type="ridge-up" fillClass="fill-neutral-50" />
+      
       {/* ================= FINAL CTA (DARK) ================= */}
-      <section className="relative overflow-hidden py-32 bg-gray-950 [clip-path:polygon(0_15%,_100%_0,_100%_100%,_0_100%)]">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 to-gray-950" />
+      <section className="relative overflow-hidden py-32 bg-slate-950">
         <motion.div
-          className="mx-auto max-w-5xl px-6 pt-12"
+          className="mx-auto max-w-5xl px-6"
           variants={itemVariants}
           initial="hidden"
           whileInView="visible"
@@ -855,6 +1017,60 @@ export function Home() {
           </GlassCard>
         </motion.div>
       </section>
+
+      {/* ================= FOOTER (DARK) (NEW) ================= */}
+      <footer className="relative z-10 mx-auto max-w-full px-6 py-20 bg-slate-950 text-neutral-400">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12">
+          <div className="col-span-2 lg:col-span-2">
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-xl font-bold text-white mb-4"
+            >
+              <Wand2 className="w-6 h-6 text-blue-500" />
+              AIFormGen
+            </Link>
+            <p className="max-w-xs text-sm">
+              The future of form building. Powered by AI, designed for developers.
+            </p>
+            <div className="flex gap-4 mt-6">
+              <a href="#" className="hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a>
+              <a href="#" className="hover:text-white transition-colors"><Github className="w-5 h-5" /></a>
+              <a href="#" className="hover:text-white transition-colors"><Linkedin className="w-5 h-5" /></a>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-white mb-4">Product</h4>
+            <ul className="space-y-3">
+              <li><Link to="/features" className="hover:text-white transition-colors text-sm">Features</Link></li>
+              <li><Link to="/pricing" className="hover:text-white transition-colors text-sm">Pricing</Link></li>
+              <li><Link to="/integrations" className="hover:text-white transition-colors text-sm">Integrations</Link></li>
+              <li><Link to="/docs" className="hover:text-white transition-colors text-sm">Documentation</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-white mb-4">Company</h4>
+            <ul className="space-y-3">
+              <li><Link to="/about" className="hover:text-white transition-colors text-sm">About Us</Link></li>
+              <li><Link to="/blog" className="hover:text-white transition-colors text-sm">Blog</Link></li>
+              <li><Link to="/careers" className="hover:text-white transition-colors text-sm">Careers</Link></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold text-white mb-4">Legal</h4>
+            <ul className="space-y-3">
+              <li><Link to="/privacy" className="hover:text-white transition-colors text-sm">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="hover:text-white transition-colors text-sm">Terms of Service</Link></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-white/10 mt-12 pt-8 text-center text-sm">
+          <p>&copy; {new Date().getFullYear()} AIFormGen. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 }
