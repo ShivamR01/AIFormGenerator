@@ -429,7 +429,7 @@ export function Home() {
             <Wand2 className="h-10 w-10 text-blue-300" />
           </div>
           <h1 className="relative z-10 mb-6 bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-5xl font-extrabold text-transparent md:text-7xl">
-            AI-Powered Form Generator
+            YOUR FORMS
           </h1>
           <p className="mx-auto mb-12 max-w-3xl text-lg text-gray-300 md:text-xl">
             Transform your workflow with AI. Describe your form — we build it
@@ -1017,60 +1017,6 @@ export function Home() {
           </GlassCard>
         </motion.div>
       </section>
-
-      {/* ================= FOOTER (DARK) (NEW) ================= */}
-      <footer className="relative z-10 mx-auto max-w-full px-6 py-20 bg-slate-950 text-neutral-400">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12">
-          <div className="col-span-2 lg:col-span-2">
-            <Link
-              to="/"
-              className="flex items-center gap-2 text-xl font-bold text-white mb-4"
-            >
-              <Wand2 className="w-6 h-6 text-blue-500" />
-              AIFormGen
-            </Link>
-            <p className="max-w-xs text-sm">
-              The future of form building. Powered by AI, designed for developers.
-            </p>
-            <div className="flex gap-4 mt-6">
-              <a href="#" className="hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a>
-              <a href="#" className="hover:text-white transition-colors"><Github className="w-5 h-5" /></a>
-              <a href="#" className="hover:text-white transition-colors"><Linkedin className="w-5 h-5" /></a>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-white mb-4">Product</h4>
-            <ul className="space-y-3">
-              <li><Link to="/features" className="hover:text-white transition-colors text-sm">Features</Link></li>
-              <li><Link to="/pricing" className="hover:text-white transition-colors text-sm">Pricing</Link></li>
-              <li><Link to="/integrations" className="hover:text-white transition-colors text-sm">Integrations</Link></li>
-              <li><Link to="/docs" className="hover:text-white transition-colors text-sm">Documentation</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-white mb-4">Company</h4>
-            <ul className="space-y-3">
-              <li><Link to="/about" className="hover:text-white transition-colors text-sm">About Us</Link></li>
-              <li><Link to="/blog" className="hover:text-white transition-colors text-sm">Blog</Link></li>
-              <li><Link to="/careers" className="hover:text-white transition-colors text-sm">Careers</Link></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold text-white mb-4">Legal</h4>
-            <ul className="space-y-3">
-              <li><Link to="/privacy" className="hover:text-white transition-colors text-sm">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="hover:text-white transition-colors text-sm">Terms of Service</Link></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="border-t border-white/10 mt-12 pt-8 text-center text-sm">
-          <p>&copy; {new Date().getFullYear()} AIFormGen. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }
