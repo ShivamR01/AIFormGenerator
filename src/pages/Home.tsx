@@ -12,6 +12,9 @@ import {
   Database,
   Layout,
   PencilRuler,
+  Terminal,
+  Code,
+  Github, // Example for logo scroller
 } from "lucide-react";
 
 // ==========================================================
@@ -26,7 +29,7 @@ interface GlassCardProps {
 const GlassCard = ({
   children,
   className = "",
-  whileHover = { scale: 1.03 },
+  whileHover = { scale: 1.02 },
 }: GlassCardProps) => (
   <motion.div
     whileHover={whileHover}
@@ -44,7 +47,8 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
     },
   },
 };
@@ -55,7 +59,7 @@ const itemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.5,
       ease: "easeOut",
     },
   },
@@ -65,10 +69,30 @@ const itemVariants = {
 // Main Home Component
 // ==========================================================
 export function Home() {
+  const logoVariants = {
+    animate: {
+      x: "-100%",
+      transition: {
+        duration: 20,
+        ease: "linear",
+        repeat: Infinity,
+      },
+    },
+  };
+
+  const logos = [
+    <Github key="1" className="h-8 w-8" />,
+    <Layers key="2" className="h-8 w-8" />,
+    <Database key="3" className="h-8 w-8" />,
+    <Globe key="4" className="h-8 w-8" />,
+    <Layout key="5" className="h-8 w-8" />,
+    <PencilRuler key="6" className="h-8 w-8" />,
+  ];
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white">
       {/* ================= FUTURISTIC AURORA BG ================= */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
+      <div className="absolute inset-0 -z-10 overflow-hidden opacity-70">
         <div className="absolute left-[-20rem] top-[-10rem] h-[40rem] w-[60rem] rounded-full bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 opacity-20 blur-3xl" />
         <div className="absolute right-[-15rem] top-[15rem] h-[30rem] w-[50rem] rounded-full bg-gradient-to-r from-pink-500 to-indigo-600 opacity-10 blur-3xl" />
         <div className="absolute bottom-0 left-1/3 h-[30rem] w-[50rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-green-500 to-blue-600 opacity-10 blur-3xl" />
@@ -101,150 +125,144 @@ export function Home() {
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
-              to="#features" // Smooth scroll or link
+              to="/login"
               className="rounded-xl border border-white/20 bg-white/10 px-8 py-3 text-lg font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20"
             >
-              Learn More
+              Sign In
             </Link>
           </div>
         </motion.div>
       </section>
 
-      {/* ================= VISUAL SHOWCASE ================= */}
-      <motion.section
-        className="relative z-10 mx-auto -mt-10 max-w-6xl px-6"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-      >
-        <GlassCard className="p-4 sm:p-6">
-          <div className="relative h-64 overflow-hidden rounded-lg md:h-[400px]">
-            {/* Fake App UI */}
-            <div className="absolute inset-0 flex">
-              <div className="w-1/4 min-w-[150px] border-r border-white/10 bg-white/5 p-4">
-                <div className="mb-4 h-5 w-3/4 rounded-full bg-white/20" />
-                <div className="mb-3 h-3 w-full rounded-full bg-white/10" />
-                <div className="mb-3 h-3 w-5/6 rounded-full bg-white/10" />
-                <div className="mb-3 h-3 w-full rounded-full bg-white/10" />
-                <div className="h-3 w-1/2 rounded-full bg-white/10" />
+      {/* ================= TRUSTED BY (INFINITE SCROLLER) ================= */}
+      <section className="relative z-10 py-16">
+        <div className="absolute inset-0 -z-10 bg-white/5 [mask-image:linear-gradient(to_bottom,transparent,white_20%,white_80%,transparent)]" />
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="mb-8 text-center text-sm font-semibold uppercase text-gray-400">
+            Trusted by developers at
+          </p>
+          <div className="relative w-full overflow-hidden">
+            <motion.div
+              className="flex"
+              variants={logoVariants}
+              initial={{ x: "0%" }}
+              animate="animate"
+            >
+              <div className="flex w-max shrink-0 items-center justify-around gap-16 px-8 text-gray-500">
+                {[...logos, ...logos].map((logo, i) => (
+                  <span key={i}>{logo}</span>
+                ))}
               </div>
-              <div className="flex-1 p-6">
-                <div className="mb-6 h-8 w-1/2 rounded-lg bg-white/20" />
-                <div className="mb-4 h-10 w-full rounded-lg bg-white/10" />
-                <div className="mb-4 h-10 w-full rounded-lg bg-white/10" />
-                <div className="mb-4 h-10 w-3/4 rounded-lg bg-white/10" />
-                <div className="h-10 w-1/3 rounded-lg bg-blue-500/50" />
-              </div>
-            </div>
-            {/* Gradient overlay */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-gray-950/50 to-transparent" />
+            </motion.div>
           </div>
-        </GlassCard>
+        </div>
+      </section>
+
+      {/* ================= FEATURES BENTO GRID ================= */}
+      <motion.section
+        className="relative z-10 mx-auto max-w-7xl px-6 py-24"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+      >
+        <h2 className="mb-4 text-center text-4xl font-extrabold">
+          Build <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Smarter</span>,
+          Not Harder
+        </h2>
+        <p className="mb-12 text-center text-lg text-gray-300">
+          Everything you need, powered by AI.
+        </p>
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* == Main AI Prompt Card == */}
+          <motion.div
+            variants={itemVariants}
+            className="lg:col-span-2"
+          >
+            <GlassCard className="flex h-full flex-col p-6">
+              <div className="mb-4 flex items-center gap-2">
+                <Terminal className="h-5 w-5 text-blue-300" />
+                <h3 className="text-lg font-semibold">AI Command Center</h3>
+              </div>
+              <div className="flex-1 rounded-lg border border-white/10 bg-black/30 p-4 font-mono text-sm">
+                <p className="text-green-400">
+                  <span className="text-blue-400">&gt;</span> create a contact
+                  form
+                </p>
+                <p className="text-gray-400">
+                  ... fields: name (text), email (email), message (textarea)
+                </p>
+                <p className="mt-2 text-green-400">
+                  <span className="text-blue-400">&gt;</span>{" "}
+                  <span className="animate-pulse">|</span>
+                </p>
+              </div>
+              <div className="mt-4 rounded-lg border border-white/10 bg-black/30 p-4">
+                <p className="mb-2 font-mono text-sm text-gray-500">
+                  // Generated Code
+                </p>
+                <Code className="h-12 w-12 text-gray-700 opacity-50" />
+              </div>
+            </GlassCard>
+          </motion.div>
+
+          {/* == Security Card == */}
+          <motion.div variants={itemVariants}>
+            <GlassCard className="flex h-full flex-col p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/20">
+                <Shield className="h-6 w-6 text-green-300" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold">Enterprise Security</h3>
+              <p className="text-gray-300">
+                All data is encrypted at rest and in transit. Secure, private,
+                and reliable.
+              </p>
+            </GlassCard>
+          </motion.div>
+
+          {/* == Analytics Card == */}
+          <motion.div variants={itemVariants}>
+            <GlassCard className="flex h-full flex-col p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-amber-500/20">
+                <TrendingUp className="h-6 w-6 text-amber-300" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold">Real-time Analytics</h3>
+              <p className="text-gray-300">
+                Track submissions, analyze trends, and export your data with one
+                click.
+              </p>
+            </GlassCard>
+          </motion.div>
+
+          {/* == Instant Generation Card == */}
+          <motion.div
+            variants={itemVariants}
+            className="lg:col-span-2"
+          >
+            <GlassCard className="flex h-full flex-col items-center justify-between p-6 sm:flex-row">
+              <div>
+                <h3 className="mb-2 text-xl font-bold">Instant Generation</h3>
+                <p className="max-w-md text-gray-300">
+                  Go from a text prompt to a fully functional, live-hosted form
+                  in under 30 seconds.
+                </p>
+              </div>
+              <Zap className="h-16 w-16 text-blue-400 sm:ml-6" />
+            </GlassCard>
+          </motion.div>
+        </div>
       </motion.section>
 
-      {/* ================= CURVED SHAPED SECTION ================= */}
-      <div className="relative z-0 mt-[-50px] overflow-hidden rounded-t-[50px] bg-gray-900/50 pt-32 pb-24 backdrop-blur-md">
-        {/* ================= HOW IT WORKS ================= */}
-        <motion.section
-          className="mx-auto max-w-7xl px-6 py-24"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={containerVariants}
-        >
-          <h2 className="mb-12 text-center text-3xl font-bold text-white md:text-4xl">
-            How It Works
-          </h2>
-          <div className="grid gap-8 md:grid-cols-3">
-            <motion.div variants={itemVariants}>
-              <GlassCard className="p-8 text-center">
-                <div className="mb-4 inline-block rounded-full bg-blue-500/20 p-3 text-blue-300">
-                  <PencilRuler className="h-8 w-8" />
-                </div>
-                <h3 className="mb-2 text-xl font-bold">1. Describe</h3>
-                <p className="text-gray-300">
-                  Explain what you need. "A contact form with name, email, and
-                  message."
-                </p>
-              </GlassCard>
-            </motion.div>
-            <motion.div variants={itemVariants}>
-              <GlassCard className="p-8 text-center">
-                <div className="mb-4 inline-block rounded-full bg-purple-500/20 p-3 text-purple-300">
-                  <Wand2 className="h-8 w-8" />
-                </div>
-                <h3 className="mb-2 text-xl font-bold">2. Generate</h3>
-                <p className="text-gray-300">
-                  Our AI instantly builds the form, backend, and validation for
-                  you.
-                </p>
-              </GlassCard>
-            </motion.div>
-            <motion.div variants={itemVariants}>
-              <GlassCard className="p-8 text-center">
-                <div className="mb-4 inline-block rounded-full bg-green-500/20 p-3 text-green-300">
-                  <TrendingUp className="h-8 w-8" />
-                </div>
-                <h3 className="mb-2 text-xl font-bold">3. Analyze</h3>
-                <p className="text-gray-300">
-                  Collect submissions and view powerful insights on your
-                  dashboard.
-                </p>
-              </GlassCard>
-            </motion.div>
-          </div>
-        </motion.section>
-
-        {/* ================= FEATURES ================= */}
-        <motion.section
-          id="features"
-          className="mx-auto max-w-7xl px-6 py-24"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={containerVariants}
-        >
-          <h2 className="mb-12 text-center text-3xl font-bold text-white md:text-4xl">
-            Why Choose Us
-          </h2>
-          <div className="grid gap-8 md:grid-cols-3">
-            {[
-              {
-                icon: <Zap className="h-7 w-7 text-blue-400" />,
-                title: "Fast Form Generation",
-                desc: "AI generates fully functional forms instantly with field validation and styling.",
-              },
-              {
-                icon: <Shield className="h-7 w-7 text-green-400" />,
-                title: "Data Security",
-                desc: "Enterprise-grade security, encrypted storage, and private forms for peace of mind.",
-              },
-              {
-                icon: <Database className="h-7 w-7 text-amber-400" />,
-                title: "Backend Included",
-                desc: "We handle the database, API, and submission logic. Just build and deploy.",
-              },
-            ].map((f) => (
-              <motion.div key={f.title} variants={itemVariants}>
-                <GlassCard className="p-8">
-                  <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-white/10 shadow-sm">
-                    {f.icon}
-                  </div>
-                  <h3 className="mb-3 text-2xl font-bold">{f.title}</h3>
-                  <p className="leading-relaxed text-gray-300">{f.desc}</p>
-                </GlassCard>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
+      {/* ================= ASYMMETRIC SECTION DIVIDER ================= */}
+      <div className="relative z-0 bg-gray-900 py-32 [clip-path:polygon(0_10%,_100%_0,_100%_90%,_0_100%)]">
         {/* ================= TESTIMONIALS ================= */}
         <motion.section
-          className="mx-auto max-w-6xl px-6 py-24 text-center"
+          className="relative z-10 mx-auto max-w-6xl px-6 text-center"
+          variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={containerVariants}
+          viewport={{ once: true, amount: 0.1 }}
         >
           <Globe className="mx-auto mb-4 h-10 w-10 text-blue-400" />
           <h2 className="mb-10 text-4xl font-bold">Loved by Teams Worldwide</h2>
@@ -270,9 +288,11 @@ export function Home() {
               },
             ].map((t) => (
               <motion.div key={t.name} variants={itemVariants}>
-                <GlassCard className="p-8 text-left">
+                <GlassCard className="h-full p-8 text-left">
                   <Layers className="mb-4 h-6 w-6 text-blue-400" />
-                  <p className="mb-4 italic text-gray-300">“{t.quote}”</p>
+                  <p className="mb-4 flex-1 italic text-gray-300">
+                    “{t.quote}”
+                  </p>
                   <h4 className="font-semibold text-white">{t.name}</h4>
                   <p className="text-sm text-gray-400">{t.role}</p>
                 </GlassCard>
@@ -280,56 +300,56 @@ export function Home() {
             ))}
           </div>
         </motion.section>
+      </div>
 
-        {/* ================= PRICING ================= */}
-        <motion.section
-          className="mx-auto max-w-7xl px-6 py-24"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={containerVariants}
-        >
-          <h2 className="mb-12 text-center text-3xl font-bold text-white md:text-4xl">
-            Find the Plan for You
-          </h2>
-          <div className="grid gap-8 lg:grid-cols-3">
-            {/* Free Plan */}
-            <motion.div variants={itemVariants}>
-              <GlassCard className="flex h-full flex-col p-8">
-                <h3 className="text-xl font-bold">Hobby</h3>
-                <p className="mt-2 text-4xl font-extrabold">
-                  $0
-                  <span className="text-base font-normal text-gray-400">
-                    / mo
-                  </span>
-                </p>
-                <p className="mt-2 text-gray-400">For personal projects.</p>
-                <ul className="mt-6 flex-1 space-y-3">
-                  <li className="flex gap-2">
+      {/* ================= PRICING ================= */}
+      <motion.section
+        className="relative z-10 -mt-16 mx-auto max-w-7xl px-6 py-24"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+      >
+        <h2 className="mb-12 text-center text-3xl font-bold text-white md:text-4xl">
+          Find the Plan for You
+        </h2>
+        <div className="grid gap-8 lg:grid-cols-3">
+          {/* Free Plan */}
+          <motion.div variants={itemVariants}>
+            <GlassCard className="flex h-full flex-col p-8">
+              <h3 className="text-xl font-bold">Hobby</h3>
+              <p className="mt-2 text-4xl font-extrabold">
+                $0
+                <span className="text-base font-normal text-gray-400">
+                  / mo
+                </span>
+              </p>
+              <p className="mt-2 text-gray-400">For personal projects.</p>
+              <ul className="mt-6 flex-1 space-y-3">
+                {[
+                  "3 Forms",
+                  "50 Submissions/mo",
+                  "AI Form Generation",
+                ].map((item) => (
+                  <li key={item} className="flex gap-2">
                     <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
-                    <span>3 Forms</span>
+                    <span className="text-gray-300">{item}</span>
                   </li>
-                  <li className="flex gap-2">
-                    <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
-                    <span>50 Submissions/mo</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
-                    <span>AI Form Generation</span>
-                  </li>
-                </ul>
-                <Link
-                  to="/signup"
-                  className="mt-8 block w-full rounded-lg border border-white/20 bg-white/10 px-6 py-3 text-center font-semibold backdrop-blur-md transition-all hover:bg-white/20"
-                >
-                  Start Free
-                </Link>
-              </GlassCard>
-            </motion.div>
+                ))}
+              </ul>
+              <Link
+                to="/signup"
+                className="mt-8 block w-full rounded-lg border border-white/20 bg-white/10 px-6 py-3 text-center font-semibold backdrop-blur-md transition-all hover:bg-white/20"
+              >
+                Start Free
+              </Link>
+            </GlassCard>
+          </motion.div>
 
-            {/* Pro Plan (Highlighted) */}
-            <motion.div variants={itemVariants}>
-              <GlassCard className="relative flex h-full flex-col border-2 border-blue-500 p-8 shadow-[0_0_30px_theme(colors.blue.500/50)]">
+          {/* Pro Plan (Highlighted) */}
+          <motion.div variants={itemVariants}>
+            <div className="relative h-full rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-[2px] shadow-[0_0_30px_theme(colors.blue.500/50)]">
+              <div className="relative h-full w-full rounded-[15px] bg-gray-950 p-8">
                 <div className="absolute -top-4 right-6 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 px-4 py-1 text-sm font-semibold">
                   Most Popular
                 </div>
@@ -342,22 +362,17 @@ export function Home() {
                 </p>
                 <p className="mt-2 text-gray-400">For professionals & teams.</p>
                 <ul className="mt-6 flex-1 space-y-3">
-                  <li className="flex gap-2">
-                    <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
-                    <span>Unlimited Forms</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
-                    <span>5,000 Submissions/mo</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
-                    <span>Analytics Dashboard</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
-                    <span>Remove Branding</span>
-                  </li>
+                  {[
+                    "Unlimited Forms",
+                    "5,000 Submissions/mo",
+                    "Analytics Dashboard",
+                    "Remove Branding",
+                  ].map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
+                      <span className="text-gray-300">{item}</span>
+                    </li>
+                  ))}
                 </ul>
                 <Link
                   to="/signup"
@@ -365,47 +380,48 @@ export function Home() {
                 >
                   Get Started
                 </Link>
-              </GlassCard>
-            </motion.div>
+              </div>
+            </div>
+          </motion.div>
 
-            {/* Enterprise Plan */}
-            <motion.div variants={itemVariants}>
-              <GlassCard className="flex h-full flex-col p-8">
-                <h3 className="text-xl font-bold">Enterprise</h3>
-                <p className="mt-2 text-4xl font-extrabold">Custom</p>
-                <p className="mt-2 text-gray-400">For large-scale needs.</p>
-                <ul className="mt-6 flex-1 space-y-3">
-                  <li className="flex gap-2">
+          {/* Enterprise Plan */}
+          <motion.div variants={itemVariants}>
+            <GlassCard className="flex h-full flex-col p-8">
+              <h3 className="text-xl font-bold">Enterprise</h3>
+              <p className="mt-2 text-4xl font-extrabold">Custom</p>
+              <p className="mt-2 text-gray-400">For large-scale needs.</p>
+              <ul className="mt-6 flex-1 space-y-3">
+                {[
+                  "Unlimited Submissions",
+                  "SSO & Custom Security",
+                  "Dedicated Support",
+                ].map((item) => (
+                  <li key={item} className="flex gap-2">
                     <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
-                    <span>Unlimited Submissions</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
-                    <span>SSO & Custom Security</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
-                    <span>Dedicated Support</span>
-                  </li>
-                </ul>
-                <Link
-                  to="/contact"
-                  className="mt-8 block w-full rounded-lg border border-white/20 bg-white/10 px-6 py-3 text-center font-semibold backdrop-blur-md transition-all hover:bg-white/20"
-                >
-                  Contact Sales
-                </Link>
-              </GlassCard>
-            </motion.div>
-          </div>
-        </motion.section>
+                    <span className="text-gray-300">{item}</span>
+</li>
+                ))}
+              </ul>
+              <Link
+                to="/contact"
+                className="mt-8 block w-full rounded-lg border border-white/20 bg-white/10 px-6 py-3 text-center font-semibold backdrop-blur-md transition-all hover:bg-white/20"
+              >
+                Contact Sales
+              </Link>
+            </GlassCard>
+          </motion.div>
+        </div>
+      </motion.section>
 
-        {/* ================= FINAL CTA ================= */}
-        <motion.section
-          className="mx-auto max-w-5xl px-6 py-24"
+      {/* ================= FINAL CTA (IN ASYMMETRIC SECTION) ================= */}
+      <section className="relative overflow-hidden py-32 [clip-path:polygon(0_15%,_100%_0,_100%_100%,_0_100%)]">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 to-gray-950" />
+        <motion.div
+          className="mx-auto max-w-5xl px-6 pt-12"
+          variants={itemVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
-          variants={itemVariants}
+          viewport={{ once: true, amount: 0.3 }}
         >
           <GlassCard className="p-12 text-center">
             <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">
@@ -423,15 +439,8 @@ export function Home() {
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </GlassCard>
-        </motion.section>
-      </div>
-
-      {/* ================= FOOTER ================= */}
-      <footer className="border-t border-white/10 bg-gray-950 py-12">
-        <div className="mx-auto max-w-7xl px-6 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} AI Forms. All rights reserved.</p>
-        </div>
-      </footer>
+        </motion.div>
+      </section>
     </div>
   );
 }
