@@ -1,5 +1,7 @@
-// Imports
-import { useState, useEffect } from "react";
+// ==========================================================
+// IMPORTS (FIXED)
+// ==========================================================
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   motion,
@@ -27,11 +29,8 @@ import {
   Github,
   ChevronDown,
   Minus,
-  Cpu,
   Brain,
-  Rocket,
 } from "lucide-react";
-import React, { useRef } from "react";
 
 // ==========================================================
 // Reusable Glass Card Component
@@ -104,7 +103,7 @@ interface AnimatedCounterProps {
 const AnimatedCounter = ({ to, suffix = "" }: AnimatedCounterProps) => {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
-  const ref = useRef(null);
+  const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   useEffect(() => {
@@ -123,7 +122,6 @@ const AnimatedCounter = ({ to, suffix = "" }: AnimatedCounterProps) => {
     </span>
   );
 };
-
 
 // ==========================================================
 // Animation Variants
@@ -156,7 +154,7 @@ const itemVariants = {
 // ==========================================================
 export function Home() {
   // 3D Hero Card Scroll Animation
-  const heroRef = useRef(null);
+  const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
@@ -247,7 +245,6 @@ export function Home() {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white [background-image:radial-gradient(white_0.5px,_transparent_0.5px)] [background-size:2rem_2rem]">
-      
       {/* ================= SUPER-PREMIUM BACKGROUND ================= */}
       <div className="absolute inset-0 -z-10 overflow-hidden opacity-70">
         {/* === REPLACE THIS WITH A REAL VIDEO FOR MAX EFFECT === */}
@@ -259,9 +256,9 @@ export function Home() {
           className="absolute inset-0 w-full h-full object-cover"
           src="/path/to/your/premium-bg-video.mp4" 
         /> */}
-        
+
         {/* Animated Aurora Fallback */}
-        <motion.div 
+        <motion.div
           className="absolute left-[-20rem] top-[-10rem] h-[40rem] w-[60rem] rounded-full bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 opacity-20 blur-3xl"
           animate={{
             x: [0, 100, 0],
@@ -275,9 +272,9 @@ export function Home() {
             repeat: Infinity,
           }}
         />
-        <motion.div 
+        <motion.div
           className="absolute right-[-15rem] top-[15rem] h-[30rem] w-[50rem] rounded-full bg-gradient-to-r from-pink-500 to-indigo-600 opacity-10 blur-3xl"
-           animate={{
+          animate={{
             x: [0, -80, 0],
             y: [0, -40, 0],
             rotate: [0, -5, 0],
@@ -303,7 +300,7 @@ export function Home() {
           <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-2xl border border-blue-400/50 bg-blue-500/10 shadow-lg">
             <Wand2 className="h-10 w-10 text-blue-300" />
           </div>
-          <motion.h1 
+          <motion.h1
             className="relative z-10 mb-6 bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-5xl font-extrabold text-transparent md:text-7xl"
             variants={heroTitleVariants}
             initial="hidden"
@@ -312,8 +309,8 @@ export function Home() {
             {heroTitle.split(" ").map((word, i) => (
               <span key={i} className="inline-block whitespace-nowrap">
                 {word.split("").map((letter, j) => (
-                  <motion.span 
-                    key={j} 
+                  <motion.span
+                    key={j}
                     className="inline-block"
                     variants={heroLetterVariants}
                   >
@@ -339,7 +336,7 @@ export function Home() {
             </Link>
           </div>
         </motion.div>
-        
+
         {/* == NEW 3D Animated Card == */}
         <motion.div
           className="relative z-0 mx-auto mt-20 max-w-4xl"
@@ -399,7 +396,7 @@ export function Home() {
       </section>
 
       {/* ================= NEW: ANIMATED STATS ================= */}
-      <motion.section 
+      <motion.section
         className="mx-auto max-w-7xl px-6 py-24"
         variants={containerVariants}
         initial="hidden"
@@ -435,7 +432,7 @@ export function Home() {
       </motion.section>
 
       {/* ================= SHAPED DIVIDER (SWOOSH) ================= */}
-      <div className="relative z-0 h-32 bg-transparent [clip-path:polygon(0_0,_100%_0,_100%_100%,_0%_100%)]">
+      <div className="relative z-0 h-32 bg-transparent">
         <div className="absolute inset-0 -z-10 bg-gray-900 [clip-path:polygon(0_0,_100%_0,_100%_100%,_50%_50%,_0_100%)]" />
       </div>
 
@@ -469,34 +466,36 @@ export function Home() {
           ))}
         </div>
       </motion.section>
-      
+
       {/* ================= NEW: STICKY SCROLLING SECTION ================= */}
       <section className="relative mx-auto max-w-7xl px-6 py-24">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
           <div className="sticky top-24 h-min lg:top-32">
-            <motion.h2 
+            <motion.h2
               className="mb-6 text-4xl font-extrabold"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              Why Our AI is 
+              Why Our AI is
               <span className="ml-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Different
               </span>
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="text-lg text-gray-300"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              We go beyond simple keyword matching. Our AI understands relational logic to build forms that are not just beautiful, but truly intelligent from the start.
+              We go beyond simple keyword matching. Our AI understands relational
+              logic to build forms that are not just beautiful, but truly
+              intelligent from the start.
             </motion.p>
           </div>
-          
+
           <div className="flex flex-col gap-8">
             {stickyFeatures.map((feature, i) => (
               <motion.div
@@ -525,8 +524,11 @@ export function Home() {
         viewport={{ once: true, amount: 0.1 }}
       >
         <h2 className="mb-12 text-center text-4xl font-extrabold">
-          Build <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Smarter</span>,
-          Not Harder
+          Build{" "}
+          <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            Smarter
+          </span>
+          , Not Harder
         </h2>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
