@@ -1,17 +1,6 @@
-// ==========================================================
-// IMPORTS (FIXED)
-// ==========================================================
-import React, { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-  useInView,
-  animate,
-  useMotionValue,
-} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Wand2,
   Zap,
@@ -29,7 +18,6 @@ import {
   Github,
   ChevronDown,
   Minus,
-  Brain,
 } from "lucide-react";
 
 // ==========================================================
@@ -55,7 +43,7 @@ const GlassCard = ({
 );
 
 // ==========================================================
-// Reusable Accordion Component
+// Reusable Accordion Component (NEW)
 // ==========================================================
 const Accordion = ({ title, children }: { title: string; children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -92,36 +80,6 @@ const Accordion = ({ title, children }: { title: string; children: React.ReactNo
   );
 };
 
-// ==========================================================
-// NEW: Animated Counter Component
-// ==========================================================
-interface AnimatedCounterProps {
-  to: number;
-  suffix?: string;
-}
-
-const AnimatedCounter = ({ to, suffix = "" }: AnimatedCounterProps) => {
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => Math.round(latest));
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-
-  useEffect(() => {
-    if (inView) {
-      animate(count, to, {
-        duration: 2,
-        ease: "easeOut",
-      });
-    }
-  }, [inView, count, to]);
-
-  return (
-    <span ref={ref}>
-      {rounded}
-      {suffix}
-    </span>
-  );
-};
 
 // ==========================================================
 // Animation Variants
@@ -205,44 +163,6 @@ export function Home() {
     },
   ];
 
-  // Sticky Scroll Section Content
-  const stickyFeatures = [
-    {
-      title: "Context-Aware Generation",
-      description:
-        "Our AI doesn't just read keywords. It understands context, dependencies, and data types, ensuring fields like 'Country' and 'State' are automatically linked.",
-      icon: <Brain className="h-12 w-12 text-blue-300" />,
-    },
-    {
-      title: "Instant Backend Logic",
-      description:
-        "We don't just build the frontend. The AI instantly provisions a secure backend, database, and API endpoint for every form you create.",
-      icon: <Database className="h-12 w-12 text-green-300" />,
-    },
-    {
-      title: "Smart Validation",
-      description:
-        "Forget manual regex. Our AI adds server-side and client-side validation for emails, phone numbers, and even complex password rules automatically.",
-      icon: <Shield className="h-12 w-12 text-purple-300" />,
-    },
-  ];
-
-  // Hero Title Animation
-  const heroTitle = "AI-Powered Form Generator";
-  const heroTitleVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-      },
-    },
-  };
-  const heroLetterVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
   return (
     <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white [background-image:radial-gradient(white_0.5px,_transparent_0.5px)] [background-size:2rem_2rem]">
       {/* ================= SUPER-PREMIUM BACKGROUND ================= */}
@@ -300,27 +220,9 @@ export function Home() {
           <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-2xl border border-blue-400/50 bg-blue-500/10 shadow-lg">
             <Wand2 className="h-10 w-10 text-blue-300" />
           </div>
-          <motion.h1
-            className="relative z-10 mb-6 bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-5xl font-extrabold text-transparent md:text-7xl"
-            variants={heroTitleVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {heroTitle.split(" ").map((word, i) => (
-              <span key={i} className="inline-block whitespace-nowrap">
-                {word.split("").map((letter, j) => (
-                  <motion.span
-                    key={j}
-                    className="inline-block"
-                    variants={heroLetterVariants}
-                  >
-                    {letter}
-                  </motion.span>
-                ))}
-                &nbsp;
-              </span>
-            ))}
-          </motion.h1>
+          <h1 className="relative z-10 mb-6 bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-5xl font-extrabold text-transparent md:text-7xl">
+            AI-Powered Form Generator
+          </h1>
           <p className="mx-auto mb-12 max-w-3xl text-lg text-gray-300 md:text-xl">
             Transform your workflow with AI. Describe your form — we build it
             instantly, securely, and beautifully.
@@ -336,43 +238,41 @@ export function Home() {
             </Link>
           </div>
         </motion.div>
-
-        {/* == NEW 3D Animated Card == */}
-        <motion.div
-          className="relative z-0 mx-auto mt-20 max-w-4xl"
-          style={{
-            transformStyle: "preserve-3d",
-            perspective: "1000px",
-            rotateX,
-            rotateY,
-          }}
-        >
-          <GlassCard className="p-4 sm:p-6">
-            <div className="relative h-64 overflow-hidden rounded-lg md:h-[400px]">
-              <div className="absolute inset-0 flex">
-                <div className="w-1/4 min-w-[150px] border-r border-white/10 bg-white/5 p-4">
-                  <div className="mb-4 h-5 w-3/4 rounded-full bg-white/20" />
-                  <div className="mb-3 h-3 w-full rounded-full bg-white/10" />
-                  <div className="mb-3 h-3 w-5/6 rounded-full bg-white/10" />
-                  <div className="mb-3 h-3 w-full rounded-full bg-white/10" />
-                  <div className="h-3 w-1/2 rounded-full bg-white/10" />
-                </div>
-                <div className="flex-1 p-6">
-                  <div className="mb-6 h-8 w-1/2 rounded-lg bg-white/20" />
-                  <div className="mb-4 h-10 w-full rounded-lg bg-white/10" />
-                  <div className="mb-4 h-10 w-full rounded-lg bg-white/10" />
-                  <div className="mb-4 h-10 w-3/4 rounded-lg bg-white/10" />
-                  <div className="h-10 w-1/3 rounded-lg bg-blue-500/50" />
-                </div>
-              </div>
-              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-gray-950/50 to-transparent" />
-            </div>
-          </GlassCard>
-        </motion.div>
       </section>
 
+      {/* ================= VISUAL SHOWCASE (RE-ADDED) ================= */}
+      <motion.section
+        className="relative z-10 mx-auto -mt-10 max-w-6xl px-6"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+      >
+        <GlassCard className="p-4 sm:p-6">
+          <div className="relative h-64 overflow-hidden rounded-lg md:h-[400px]">
+            {/* Fake App UI */}
+            <div className="absolute inset-0 flex">
+              <div className="w-1/4 min-w-[150px] border-r border-white/10 bg-white/5 p-4">
+                <div className="mb-4 h-5 w-3/4 rounded-full bg-white/20" />
+                <div className="mb-3 h-3 w-full rounded-full bg-white/10" />
+                <div className="mb-3 h-3 w-5/6 rounded-full bg-white/10" />
+                <div className="mb-3 h-3 w-full rounded-full bg-white/10" />
+                <div className="h-3 w-1/2 rounded-full bg-white/10" />
+              </div>
+              <div className="flex-1 p-6">
+                <div className="mb-6 h-8 w-1/2 rounded-lg bg-white/20" />
+                <div className="mb-4 h-10 w-full rounded-lg bg-white/10" />
+                <div className="mb-4 h-10 w-full rounded-lg bg-white/10" />
+                <div className="mb-4 h-10 w-3/4 rounded-lg bg-white/10" />
+                <div className="h-10 w-1/3 rounded-lg bg-blue-500/50" />
+              </div>
+            </div>
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-gray-950/50 to-transparent" />
+          </div>
+        </GlassCard>
+      </motion.section>
+
       {/* ================= TRUSTED BY (INFINITE SCROLLER) ================= */}
-      <section className="relative z-10 py-24">
+      <section className="relative z-10 py-16">
         <div className="absolute inset-0 -z-10 bg-white/5 [mask-image:linear-gradient(to_bottom,transparent,white_20%,white_80%,transparent)]" />
         <div className="mx-auto max-w-7xl px-6">
           <p className="mb-8 text-center text-sm font-semibold uppercase text-gray-400">
@@ -395,48 +295,7 @@ export function Home() {
         </div>
       </section>
 
-      {/* ================= NEW: ANIMATED STATS ================= */}
-      <motion.section
-        className="mx-auto max-w-7xl px-6 py-24"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-      >
-        <div className="grid grid-cols-1 gap-8 text-center md:grid-cols-3">
-          <motion.div variants={itemVariants}>
-            <GlassCard className="p-8">
-              <h3 className="text-5xl font-extrabold text-blue-300">
-                <AnimatedCounter to={10} suffix="K+" />
-              </h3>
-              <p className="mt-2 text-lg text-gray-400">Forms Generated</p>
-            </GlassCard>
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <GlassCard className="p-8">
-              <h3 className="text-5xl font-extrabold text-purple-300">
-                <AnimatedCounter to={5000} suffix="+" />
-              </h3>
-              <p className="mt-2 text-lg text-gray-400">Active Developers</p>
-            </GlassCard>
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <GlassCard className="p-8">
-              <h3 className="text-5xl font-extrabold text-green-300">
-                <AnimatedCounter to={2} suffix="M+" />
-              </h3>
-              <p className="mt-2 text-lg text-gray-400">Hours Saved</p>
-            </GlassCard>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* ================= SHAPED DIVIDER (SWOOSH) ================= */}
-      <div className="relative z-0 h-32 bg-transparent">
-        <div className="absolute inset-0 -z-10 bg-gray-900 [clip-path:polygon(0_0,_100%_0,_100%_100%,_50%_50%,_0_100%)]" />
-      </div>
-
-      {/* ================= HOW IT WORKS (STEPPER) ================= */}
+      {/* ================= HOW IT WORKS (NEW STEPPER) ================= */}
       <motion.section
         className="mx-auto max-w-7xl px-6 py-24"
         variants={containerVariants}
@@ -448,7 +307,9 @@ export function Home() {
           Get Started in 4 Simple Steps
         </h2>
         <div className="relative mx-auto max-w-2xl">
+          {/* The connecting line */}
           <div className="absolute left-9 top-0 z-0 h-full w-0.5 bg-gradient-to-b from-transparent via-blue-500 to-transparent" />
+
           {steps.map((step, i) => (
             <motion.div
               key={i}
@@ -467,54 +328,6 @@ export function Home() {
         </div>
       </motion.section>
 
-      {/* ================= NEW: STICKY SCROLLING SECTION ================= */}
-      <section className="relative mx-auto max-w-7xl px-6 py-24">
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
-          <div className="sticky top-24 h-min lg:top-32">
-            <motion.h2
-              className="mb-6 text-4xl font-extrabold"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              Why Our AI is
-              <span className="ml-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Different
-              </span>
-            </motion.h2>
-            <motion.p
-              className="text-lg text-gray-300"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              We go beyond simple keyword matching. Our AI understands relational
-              logic to build forms that are not just beautiful, but truly
-              intelligent from the start.
-            </motion.p>
-          </div>
-
-          <div className="flex flex-col gap-8">
-            {stickyFeatures.map((feature, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                <GlassCard className="p-8">
-                  <div className="mb-4">{feature.icon}</div>
-                  <h3 className="mb-2 text-xl font-bold">{feature.title}</h3>
-                  <p className="text-gray-300">{feature.description}</p>
-                </GlassCard>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ================= FEATURES BENTO GRID ================= */}
       <motion.section
         className="relative z-10 mx-auto max-w-7xl px-6 py-24"
@@ -532,6 +345,7 @@ export function Home() {
         </h2>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* == Main AI Prompt Card == */}
           <motion.div variants={itemVariants} className="lg:col-span-2">
             <GlassCard className="flex h-full flex-col p-6">
               <div className="mb-4 flex items-center gap-2">
@@ -578,6 +392,7 @@ export function Home() {
             </GlassCard>
           </motion.div>
 
+          {/* == Instant Generation Card == */}
           <motion.div variants={itemVariants} className="lg:col-span-2">
             <GlassCard className="flex h-full flex-col items-center justify-between p-6 sm:flex-row">
               <div>
@@ -730,7 +545,7 @@ export function Home() {
                   <li key={item} className="flex gap-2">
                     <Check className="h-5 w-5 flex-shrink-0 text-green-400" />
                     <span className="text-gray-300">{item}</span>
-                  </li>
+</li>
                 ))}
               </ul>
               <Link
@@ -744,7 +559,7 @@ export function Home() {
         </div>
       </motion.section>
 
-      {/* ================= FEATURE COMPARISON TABLE ================= */}
+      {/* ================= FEATURE COMPARISON TABLE (NEW) ================= */}
       <motion.section
         className="mx-auto max-w-7xl px-6 py-24"
         initial="hidden"
@@ -780,6 +595,12 @@ export function Home() {
                   <td className="py-4 pl-4 text-center text-gray-300">Unlimited</td>
                 </tr>
                 <tr className="border-b border-white/10">
+                  <td className="py-4 pr-4">AI Form Generation</td>
+                  <td className="py-4 px-4 text-center"><Check className="h-5 w-5 mx-auto text-green-400" /></td>
+                  <td className="py-4 px-4 text-center"><Check className="h-5 w-5 mx-auto text-green-400" /></td>
+                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 mx-auto text-green-400" /></td>
+                </tr>
+                <tr className="border-b border-white/10">
                   <td className="py-4 pr-4">Analytics Dashboard</td>
                   <td className="py-4 px-4 text-center"><Minus className="h-5 w-5 mx-auto text-gray-600" /></td>
                   <td className="py-4 px-4 text-center"><Check className="h-5 w-5 mx-auto text-green-400" /></td>
@@ -797,7 +618,7 @@ export function Home() {
         </GlassCard>
       </motion.section>
 
-      {/* ================= FAQ ================= */}
+      {/* ================= FAQ (NEW) ================= */}
       <motion.section
         className="mx-auto max-w-4xl px-6 py-24"
         initial="hidden"
@@ -813,6 +634,9 @@ export function Home() {
         </Accordion>
         <Accordion title="Can I embed the forms on my own website?">
           <p>Yes! After generating a form, you can embed it on any website using a simple snippet of code we provide. You can also share it as a standalone page.</p>
+        </Accordion>
+        <Accordion title="What happens if I go over my submission limit?">
+          <p>On the Hobby plan, your forms will be temporarily disabled until the next billing cycle. On the Pro plan, we offer overage pricing or the option to upgrade to an Enterprise plan.</p>
         </Accordion>
         <Accordion title="Is my data secure?">
           <p>Absolutely. All form data is encrypted at rest and in transit. We are fully GDPR compliant and take data security very seriously. Enterprise plans offer additional security features like SSO.</p>
