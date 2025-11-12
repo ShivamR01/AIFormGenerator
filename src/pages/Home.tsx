@@ -961,7 +961,7 @@ export function Home() {
 
       {/* ================= FEATURE COMPARISON TABLE (DARK) ================= */}
       <motion.section
-        className="mx-auto max-w-7xl px-6 py-24 bg-black"
+        className="mx-auto max-w-7xl px-6 py-30 bg-black"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
